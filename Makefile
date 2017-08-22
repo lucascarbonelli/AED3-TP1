@@ -4,9 +4,9 @@ clean:
 	rm -f *.o
 	rm -f main
 
-main: main.cpp opiniones.o
-	g++ $(CXXFLAGS) -g -Wall -o main main.cpp opiniones.o 
+main: main.cpp casos.o
+	g++ $(CXXFLAGS) -g -Wall -o main main.cpp casos.o 
 
-opiniones.o: opiniones.h opiniones.cpp
-	g++ $(CXXFLAGS) -g -Wall -c opiniones.cpp
+casos.o: casos.h casos.cpp
+	g++ $(CXXFLAGS) -g -Wall -c casos.cpp
 

@@ -1,3 +1,6 @@
+#ifndef OPINIONES_H
+#define OPINIONES_H
+
 #include <vector>
 #include <set>
 
@@ -13,3 +16,5 @@ class Opiniones {
         bool esConjuntoConfiable(std::set<int> &conjuntoDeAgentes);
         std::vector<std::vector<opinion > > matriz_opiniones;
 };
+
+#endif

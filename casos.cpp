@@ -17,15 +17,16 @@ void Casos::agregar_opinion(int agenteX, int agenteY){
 int Casos::cantidadAgentesConfiables(){
     std::vector<int> conjDeAgentes = std::vector<int>();
 
-    cantidadAgentesConfiablesBT(conjDeAgentes);
-
-    return conjDeAgentes.size();
+    return cantidadAgentesConfiablesBT(conjDeAgentes, 0);
 }
 
-bool Casos::cantidadAgentesConfiablesBT(std::vector<int> &conjuntoDeAgentes){
+unsigned int Casos::cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes, unsigned int maxCantAgentesConfiables){
+    unsigned int agentesConfiablesHastaAhora = maxCantAgentesConfiables;
+    unsigned int agentesConfiablesTmp;
     bool conjuntoAceptado = true;
 
     // Se rechaza el conjunto?
+    // Ningún agente en el conjunto diga que no es confiable un agente en el conjunto.
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
         for(unsigned int j = 0; j < lista_opiniones.size(); j++){
             if(lista_opiniones[j].agenteX == conjuntoDeAgentes[i]){
@@ -35,21 +36,23 @@ bool Casos::cantidadAgentesConfiablesBT(std::vector<int> &conjuntoDeAgentes){
                     if(abs(lista_opiniones[j].agenteY) == conjuntoDeAgentes[k]){
                         agenteYEstaEnConjuntoDeAgentes = true;
                         if(lista_opiniones[j].agenteY < 0){
-                            return false; // se poda la rama!
+                            return 0; // se poda la rama!
                         } 
                     }
                 }
                 // Si no está en el conjunto, se verifica que no sea confiable
                 if(!agenteYEstaEnConjuntoDeAgentes && lista_opiniones[j].agenteY > 0){
-                    conjuntoAceptado = false; // el agente deberia sumarse al conjunto mas adelante
+                    conjuntoAceptado = false; // el agente deberia sumarse al conjunto mas adelante?
                 }
             }
         }
     }
 
     // Se acepta el conjunto?
+    // Ningún agente en el conjunto diga que es confiable un agente que no esta en el conjunto.
     if(conjuntoDeAgentes.size() > 0 && conjuntoAceptado){
-        return true;
+        agentesConfiablesHastaAhora = conjuntoDeAgentes.size();
+        //return conjuntoDeAgentes.size(); // se poda la rama?! Conjunto válido!
     }
 
     // Se expande el conjunto
@@ -59,12 +62,14 @@ bool Casos::cantidadAgentesConfiablesBT(std::vector<int> &conjuntoDeAgentes){
 
     for( ; i <= _informantes; i++){
         conjuntoDeAgentes.push_back(i);
-        if(!cantidadAgentesConfiablesBT(conjuntoDeAgentes)){
-            conjuntoDeAgentes.pop_back();
-        } else {
-            return true;
+        agentesConfiablesTmp = cantidadAgentesConfiablesBT(conjuntoDeAgentes, agentesConfiablesHastaAhora);
+
+        if(agentesConfiablesTmp > agentesConfiablesHastaAhora){
+            agentesConfiablesHastaAhora = agentesConfiablesTmp;
         }
+
+        conjuntoDeAgentes.pop_back();
     }
 
-    return false; // no se alcanza nunca
+    return agentesConfiablesHastaAhora;
 }

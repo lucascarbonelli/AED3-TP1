@@ -1,4 +1,5 @@
 #include "casos.h"
+#include <time.h> /* time */
 
 #include <stdlib.h>
 
@@ -7,7 +8,7 @@ Casos::Casos(int informantes, int respuestas){
     _respuestas = respuestas;
 }
 
-void Casos::agregar_opinion(int agenteX, int agenteY){
+void Casos::agregarOpinion(int agenteX, int agenteY){
     Opinion op;
     op.agenteX = agenteX;
     op.agenteY = agenteY;
@@ -77,4 +78,36 @@ unsigned int Casos::cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgent
     }
 
     return agentesConfiablesHastaAhora;
+}
+
+int Casos::getCantidadInformantes(){
+    return _informantes;
+}
+
+int Casos::getCantidadRespuestas(){
+    return _respuestas;
+}
+
+double Casos::getBenchmarkTiempo(){
+    return _benchmark_tiempo;
+}
+
+unsigned int Casos::getCantidadAgentesConfiables(){
+    return _cantidadAgentesConfiables;
+}
+
+void Casos::benchmark(unsigned int repeticiones){
+    // Coloca en _benchmark_tiempo el tiempo promedio de las n repeticiones
+    double tiempo;
+    clock_t start;
+    clock_t end;
+
+    for(unsigned int i = 0; i < repeticiones; i++){
+        start = clock();
+        _cantidadAgentesConfiables = cantidadAgentesConfiables();
+        end = clock();
+        tiempo += (((double)(end - start)) / CLOCKS_PER_SEC) * 1000;
+    }
+
+    _benchmark_tiempo = tiempo/repeticiones;
 }

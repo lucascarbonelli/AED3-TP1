@@ -6,8 +6,14 @@
 class Casos {
     public:
         Casos(int informantes, int respuestas);
-        void agregar_opinion(int agenteX, int agenteY);
+        void agregarOpinion(int agenteX, int agenteY);
         int cantidadAgentesConfiables();
+
+        int getCantidadInformantes();
+        int getCantidadRespuestas();
+        double getBenchmarkTiempo();
+        unsigned int getCantidadAgentesConfiables();
+        void benchmark(unsigned int repeticiones);
 
     private:
         int _informantes;
@@ -19,6 +25,9 @@ class Casos {
         };
         
         std::vector<Opinion > lista_opiniones;
+
+        double _benchmark_tiempo;
+        unsigned int _cantidadAgentesConfiables;
 
         unsigned int cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes);
 };

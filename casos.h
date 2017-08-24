@@ -20,7 +20,7 @@ class Casos {
         
         std::vector<Opinion > lista_opiniones;
 
-        unsigned int cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes, unsigned int maxCantAgentesConfiables);
+        unsigned int cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes);
 };
 
 #endif

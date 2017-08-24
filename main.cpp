@@ -3,7 +3,7 @@
 #include <vector>
 #include "casos.h"
 
-#define REPETICIONES 1
+#define REPETICIONES 10
 #define DELIMITADOR ','
 #define ARCHIVO_RESULTADOS "resultados.csv"
 

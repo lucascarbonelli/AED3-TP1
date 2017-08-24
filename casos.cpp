@@ -6,6 +6,8 @@
 Casos::Casos(int informantes, int respuestas){
     _informantes = informantes;
     _respuestas = respuestas;
+    _benchmark_tiempo = 0.0;
+    _cantidadAgentesConfiables = -1;
 }
 
 void Casos::agregarOpinion(int agenteX, int agenteY){
@@ -98,7 +100,7 @@ unsigned int Casos::getCantidadAgentesConfiables(){
 
 void Casos::benchmark(unsigned int repeticiones){
     // Coloca en _benchmark_tiempo el tiempo promedio de las n repeticiones
-    double tiempo;
+    double tiempo = 0.0;
     clock_t start;
     clock_t end;
 
@@ -106,7 +108,7 @@ void Casos::benchmark(unsigned int repeticiones){
         start = clock();
         _cantidadAgentesConfiables = cantidadAgentesConfiables();
         end = clock();
-        tiempo += (((double)(end - start)) / CLOCKS_PER_SEC) * 1000;
+        tiempo += (((double)(end - start)) / CLOCKS_PER_SEC);// * 1000; //dejo todo en milisegundos, para que no salte notación cientifica
     }
 
     _benchmark_tiempo = tiempo/repeticiones;

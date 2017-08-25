@@ -24,9 +24,9 @@ class Casos {
             int agenteY;
         };
         
-        std::vector<Opinion > lista_opiniones;
+        std::vector<Opinion > _listaOpiniones;
 
-        double _benchmark_tiempo;
+        double _benchmarkTiempo;
         unsigned int _cantidadAgentesConfiables;
 
         unsigned int cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes);

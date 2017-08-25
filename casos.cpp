@@ -6,7 +6,7 @@
 Casos::Casos(int informantes, int respuestas){
     _informantes = informantes;
     _respuestas = respuestas;
-    _benchmark_tiempo = 0.0;
+    _benchmarkTiempo = 0.0;
     _cantidadAgentesConfiables = -1;
 }
 
@@ -14,7 +14,7 @@ void Casos::agregarOpinion(int agenteX, int agenteY){
     Opinion op;
     op.agenteX = agenteX;
     op.agenteY = agenteY;
-    lista_opiniones.push_back(op);
+    _listaOpiniones.push_back(op);
 }
 
 int Casos::cantidadAgentesConfiables(){
@@ -24,17 +24,17 @@ int Casos::cantidadAgentesConfiables(){
 
 unsigned int Casos::cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
-        for(unsigned int j = 0; j < lista_opiniones.size(); j++){
-            if(lista_opiniones[j].agenteX == conjuntoDeAgentes[i]){
+        for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+            if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
                 // Se busca en el conjunto al agente Y
                 bool agenteYEstaEnConjuntoDeAgentes = false;
                 for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
-                    if(abs(lista_opiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                    if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
                         agenteYEstaEnConjuntoDeAgentes = true;
                     }
                 }
 
-                if(agenteYEstaEnConjuntoDeAgentes && lista_opiniones[j].agenteY < 0){
+                if(agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY < 0){
                     // Los agentes X e Y estan el conjunto pero X no confia en Y
                     // se poda la rama!
                     return 0;
@@ -51,7 +51,7 @@ unsigned int Casos::cantidadAgentesConfiablesBT(std::vector<int> conjuntoDeAgent
                 // conjunto de numero menor al ultimo agregado !!
 
                 // Si no está en el conjunto, se verifica que no sea confiable
-                if(!agenteYEstaEnConjuntoDeAgentes && lista_opiniones[j].agenteY > 0 && lista_opiniones[j].agenteY < conjuntoDeAgentes.back()){
+                if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0 && _listaOpiniones[j].agenteY < conjuntoDeAgentes.back()){
                     // El agente Y no esta en el conjunto, X confia en Y
                     // Agente Y es menor al ultimo agente X agregado, por lo tanto nunca va a ser agregado
                     // se poda la rama!
@@ -91,7 +91,7 @@ int Casos::getCantidadRespuestas(){
 }
 
 double Casos::getBenchmarkTiempo(){
-    return _benchmark_tiempo;
+    return _benchmarkTiempo;
 }
 
 unsigned int Casos::getCantidadAgentesConfiables(){
@@ -99,7 +99,7 @@ unsigned int Casos::getCantidadAgentesConfiables(){
 }
 
 void Casos::benchmark(unsigned int repeticiones){
-    // Coloca en _benchmark_tiempo el tiempo promedio de las n repeticiones
+    // Coloca en _benchmarkTiempo el tiempo promedio de las n repeticiones
     double tiempo = 0.0;
     clock_t start;
     clock_t end;
@@ -111,5 +111,5 @@ void Casos::benchmark(unsigned int repeticiones){
         tiempo += (((double)(end - start)) / CLOCKS_PER_SEC);// * 1000; //dejo todo en milisegundos, para que no salte notación cientifica
     }
 
-    _benchmark_tiempo = tiempo/repeticiones;
+    _benchmarkTiempo = tiempo/repeticiones;
 }

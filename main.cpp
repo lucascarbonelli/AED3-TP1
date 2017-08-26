@@ -1,17 +1,33 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include "casos.h"
 
 #define REPETICIONES 10
 #define DELIMITADOR ','
 #define ARCHIVO_RESULTADOS "resultados.csv"
 
-int main(){
+int main(int argc, char* argv[]){
     int informantes;
     int respuestas;
     int agenteX, agenteY;
+    int podas = 2;
+    std::string podasParam;
     std::vector<Casos> lista_casos;
+
+    if(argc == 1){
+        podasParam = std::string(argv[0]);
+        if(podasParam == "-p0"){
+            podas = 0;
+        }
+        else if(podasParam == "-p1"){
+            podas = 1;
+        }
+        else if(podasParam == "-p2"){
+            podas = 2;
+        }
+    }
 
     do {
         std::cin >> informantes;
@@ -33,7 +49,7 @@ int main(){
     } while(!(informantes == 0 && respuestas == 0));
 
     for(unsigned int i = 0; i < lista_casos.size(); i++){
-        lista_casos[i].benchmark(REPETICIONES);
+        lista_casos[i].benchmark(REPETICIONES, podas);
     }
 
     std::ofstream resultados;

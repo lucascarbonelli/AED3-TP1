@@ -17,16 +17,16 @@ void Casos::agregarOpinion(int agenteX, int agenteY){
     _listaOpiniones.push_back(op);
 }
 
-int Casos::cantidadAgentesConfiables(unsigned int podas){
+void Casos::calcularAgentesConfiables(unsigned int podas){
     std::vector<int> conjDeAgentes = std::vector<int>();
     if(podas == 0){
-        return cantidadAgentesConfiablesBTSinPodas(conjDeAgentes);
+        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTSinPodas(conjDeAgentes);
     }
     else if(podas == 1){
-        return cantidadAgentesConfiablesBTUnaPodas(conjDeAgentes);
+        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTUnaPodas(conjDeAgentes);
     }
     else {
-        return cantidadAgentesConfiablesBTDosPodas(conjDeAgentes);
+        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTDosPodas(conjDeAgentes);
     }
 }
 
@@ -200,8 +200,6 @@ unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int> conjunt
                         }
                     }
                 }
-
-                // Poda 2
             }
         }
     }
@@ -212,7 +210,12 @@ unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int> conjunt
     unsigned int agentesConfiablesHastaAhora = conjuntoDeAgentes.size();
     unsigned int agentesConfiablesTmp;
 
-    while(agente <= _informantes){
+    // Poda 2
+    // Si agentesConfiablesHastaAhora es mayor a la cantidad de agentes actualmente en el
+    // conjuntoDeAgentes sumada a la cantidad de agentes que quedan por agregar,
+    // no va a ser posible encontrar un conjunto de agentes mas grande, por lo tanto, 
+    // se poda la rama
+    while(agente <= _informantes && (agentesConfiablesHastaAhora < (conjuntoDeAgentes.size() + _informantes - (agente-1)))){
         conjuntoDeAgentes.push_back(agente);
         agentesConfiablesTmp = cantidadAgentesConfiablesBTDosPodas(conjuntoDeAgentes);
 
@@ -251,7 +254,7 @@ void Casos::benchmark(unsigned int repeticiones, unsigned int podas){
 
     for(unsigned int i = 0; i < repeticiones; i++){
         start = clock();
-        _cantidadAgentesConfiables = cantidadAgentesConfiables(podas);
+        calcularAgentesConfiables(podas);
         end = clock();
         tiempo += (((double)(end - start)) / CLOCKS_PER_SEC);// * 1000; //dejo todo en milisegundos, para que no salte notación cientifica
     }

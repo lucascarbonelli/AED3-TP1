@@ -7,7 +7,7 @@ class Casos {
     public:
         Casos(int informantes, int respuestas);
         void agregarOpinion(int agenteX, int agenteY);
-        int cantidadAgentesConfiables(unsigned int podas);
+        void calcularAgentesConfiables(unsigned int podas);
 
         int getCantidadInformantes();
         int getCantidadRespuestas();

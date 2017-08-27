@@ -30,7 +30,7 @@ void Casos::calcularAgentesConfiables(unsigned int podas){
     }
 }
 
-unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int> conjuntoDeAgentes){
+unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
         for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
             if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
@@ -85,7 +85,7 @@ unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int> conjunt
     return agentesConfiablesHastaAhora;
 }
 
-unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int> conjuntoDeAgentes){
+unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
         for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
             if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
@@ -155,7 +155,7 @@ unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int> conjunt
     return agentesConfiablesHastaAhora;
 }
 
-unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int> conjuntoDeAgentes){
+unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
         for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
             if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){

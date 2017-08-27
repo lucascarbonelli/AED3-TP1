@@ -82,6 +82,31 @@ unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int>& conjun
         agente++;
     }
 
+    // Es necesario volver a chequear la condicion:
+    // El agente Y no esta en el conjunto, X confia en Y
+    // Es un "caso base", se realiza la verificacion si ninguno de los hijos de este nodo
+    // permite armar un conjunto de mayor tamaño
+    if(conjuntoDeAgentes.size() == agentesConfiablesHastaAhora){
+        for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
+            for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+                if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
+                    // Se busca en el conjunto al agente Y
+                    bool agenteYEstaEnConjuntoDeAgentes = false;
+                    for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
+                        if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                            agenteYEstaEnConjuntoDeAgentes = true;
+                        }
+                    }
+    
+                    // Validación del conjunto
+                    if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0){
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+
     return agentesConfiablesHastaAhora;
 }
 
@@ -150,6 +175,31 @@ unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjun
 
         conjuntoDeAgentes.pop_back();
         agente++;
+    }
+
+    // Es necesario volver a chequear la condicion:
+    // El agente Y no esta en el conjunto, X confia en Y
+    // Es un "caso base", se realiza la verificacion si ninguno de los hijos de este nodo
+    // permite armar un conjunto de mayor tamaño
+    if(conjuntoDeAgentes.size() == agentesConfiablesHastaAhora){
+        for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
+            for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+                if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
+                    // Se busca en el conjunto al agente Y
+                    bool agenteYEstaEnConjuntoDeAgentes = false;
+                    for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
+                        if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                            agenteYEstaEnConjuntoDeAgentes = true;
+                        }
+                    }
+    
+                    // Validación del conjunto
+                    if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0){
+                        return 0;
+                    }
+                }
+            }
+        }
     }
 
     return agentesConfiablesHastaAhora;
@@ -225,6 +275,31 @@ unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int>& conjun
 
         conjuntoDeAgentes.pop_back();
         agente++;
+    }
+
+    // Es necesario volver a chequear la condicion:
+    // El agente Y no esta en el conjunto, X confia en Y
+    // Es un "caso base", se realiza la verificacion si ninguno de los hijos de este nodo
+    // permite armar un conjunto de mayor tamaño
+    if(conjuntoDeAgentes.size() == agentesConfiablesHastaAhora){
+        for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
+            for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+                if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
+                    // Se busca en el conjunto al agente Y
+                    bool agenteYEstaEnConjuntoDeAgentes = false;
+                    for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
+                        if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                            agenteYEstaEnConjuntoDeAgentes = true;
+                        }
+                    }
+    
+                    // Validación del conjunto
+                    if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0){
+                        return 0;
+                    }
+                }
+            }
+        }
     }
 
     return agentesConfiablesHastaAhora;

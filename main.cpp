@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
         
         std::ofstream resultados;
         resultados.open(ARCHIVO_RESULTADOS);
-        resultados << "informantes" << DELIMITADOR << "respuestas" << DELIMITADOR << "agentes_confiables" << DELIMITADOR << "tiempo" << std::endl;
+        resultados << "Informantes" << DELIMITADOR << "Respuestas" << DELIMITADOR << "Agentes_Confiables" << DELIMITADOR << "Tiempo_s" << std::endl;
         for(unsigned int i = 0; i < lista_casos.size(); i++){
             resultados << lista_casos[i].getCantidadInformantes() << DELIMITADOR;
             resultados << lista_casos[i].getCantidadRespuestas() << DELIMITADOR;

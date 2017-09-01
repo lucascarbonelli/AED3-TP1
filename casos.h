@@ -31,6 +31,8 @@ class Casos {
 
         unsigned int cantidadAgentesConfiablesBTSinPodas(std::vector<int>& conjuntoDeAgentes);
         unsigned int cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjuntoDeAgentes);
+        unsigned int cantidadAgentesConfiablesBTUnaPodaA(std::vector<int>& conjuntoDeAgentes);
+        unsigned int cantidadAgentesConfiablesBTUnaPodaB(std::vector<int>& conjuntoDeAgentes);
         unsigned int cantidadAgentesConfiablesBTDosPodas(std::vector<int>& conjuntoDeAgentes);
 };
 

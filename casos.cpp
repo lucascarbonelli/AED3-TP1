@@ -10,6 +10,7 @@ Casos::Casos(int informantes, int respuestas){
     _cantidadAgentesConfiables = -1;
 }
 
+
 void Casos::agregarOpinion(int agenteX, int agenteY){
     Opinion op;
     op.agenteX = agenteX;
@@ -17,18 +18,23 @@ void Casos::agregarOpinion(int agenteX, int agenteY){
     _listaOpiniones.push_back(op);
 }
 
+
 void Casos::calcularAgentesConfiables(unsigned int podas){
     std::vector<int> conjDeAgentes = std::vector<int>();
     if(podas == 0){
         _cantidadAgentesConfiables = cantidadAgentesConfiablesBTSinPodas(conjDeAgentes);
     }
-    else if(podas == 1){
-        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTUnaPodas(conjDeAgentes);
+    else if(podas == 11){
+        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTUnaPodaA(conjDeAgentes);
+    }
+    else if(podas == 12){
+        _cantidadAgentesConfiables = cantidadAgentesConfiablesBTUnaPodaB(conjDeAgentes);
     }
     else {
         _cantidadAgentesConfiables = cantidadAgentesConfiablesBTDosPodas(conjDeAgentes);
     }
 }
+
 
 unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
@@ -110,7 +116,8 @@ unsigned int Casos::cantidadAgentesConfiablesBTSinPodas(std::vector<int>& conjun
     return agentesConfiablesHastaAhora;
 }
 
-unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjuntoDeAgentes){
+
+unsigned int Casos::cantidadAgentesConfiablesBTUnaPodaA(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
         for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
             if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
@@ -167,7 +174,7 @@ unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjun
 
     while(agente <= _informantes){
         conjuntoDeAgentes.push_back(agente);
-        agentesConfiablesTmp = cantidadAgentesConfiablesBTUnaPodas(conjuntoDeAgentes);
+        agentesConfiablesTmp = cantidadAgentesConfiablesBTUnaPodaA(conjuntoDeAgentes);
 
         if(agentesConfiablesTmp > agentesConfiablesHastaAhora){
             agentesConfiablesHastaAhora = agentesConfiablesTmp;
@@ -204,6 +211,93 @@ unsigned int Casos::cantidadAgentesConfiablesBTUnaPodas(std::vector<int>& conjun
 
     return agentesConfiablesHastaAhora;
 }
+
+
+unsigned int Casos::cantidadAgentesConfiablesBTUnaPodaB(std::vector<int>& conjuntoDeAgentes){
+    for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
+        for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+            if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
+                // Se busca en el conjunto al agente Y
+                bool agenteYEstaEnConjuntoDeAgentes = false;
+                for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
+                    if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                        agenteYEstaEnConjuntoDeAgentes = true;
+                    }
+                }
+
+                // Validación del conjunto
+                if(agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY < 0){
+                    // Los agentes X e Y estan el conjunto pero X no confia en Y
+                    // El conjunto no es valido
+                    return 0;
+                }
+
+                // Puede ocurrir que un agente diga que algun agente que no esta en el conjunto es confiable
+                // y el conjunto no deba considerarse invalido, ya que puede que ese agente se "agregue" al 
+                // conjunto al avanzar en la rama. Para que esto ultimo ocurra, necesariamente 
+                // el numero del agente debe ser mayor al del ultimo agente agregado, 
+                // ya que se agregan al conjunto conjuntoDeAgentes de menor a mayor.
+                if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0 && _listaOpiniones[j].agenteY < conjuntoDeAgentes.back()){
+                    // El agente Y no esta en el conjunto, X confia en Y
+                    // Agente Y es menor al ultimo agente X agregado, por lo tanto nunca va a ser agregado
+                    // El conjunto no es valido
+                    return 0;
+                }
+            }
+        }
+    }
+ 
+    // Se expande el conjunto, si el conjunto esta vacio, se agrega el agente 1
+    // Si no esta vacio se agrega el agente que sigue al ultimo agregado
+    int agente = conjuntoDeAgentes.size() == 0 ? 1 : conjuntoDeAgentes.back() + 1;
+    unsigned int agentesConfiablesHastaAhora = conjuntoDeAgentes.size();
+    unsigned int agentesConfiablesTmp;
+
+    // Poda 2
+    // Si agentesConfiablesHastaAhora es mayor a la cantidad de agentes actualmente en el
+    // conjuntoDeAgentes sumada a la cantidad de agentes que quedan por agregar,
+    // no va a ser posible encontrar un conjunto de agentes mas grande, por lo tanto, 
+    // se poda la rama
+    while(agente <= _informantes && (agentesConfiablesHastaAhora < (conjuntoDeAgentes.size() + _informantes - (agente-1)))){
+        conjuntoDeAgentes.push_back(agente);
+        agentesConfiablesTmp = cantidadAgentesConfiablesBTUnaPodaB(conjuntoDeAgentes);
+
+        if(agentesConfiablesTmp > agentesConfiablesHastaAhora){
+            agentesConfiablesHastaAhora = agentesConfiablesTmp;
+        }
+
+        conjuntoDeAgentes.pop_back();
+        agente++;
+    }
+
+    // Es necesario volver a chequear la condicion:
+    // El agente Y no esta en el conjunto, X confia en Y
+    // Es un "caso base", se realiza la verificacion si ninguno de los hijos de este nodo
+    // permite armar un conjunto de mayor tamaño
+    if(conjuntoDeAgentes.size() == agentesConfiablesHastaAhora){
+        for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
+            for(unsigned int j = 0; j < _listaOpiniones.size(); j++){
+                if(_listaOpiniones[j].agenteX == conjuntoDeAgentes[i]){
+                    // Se busca en el conjunto al agente Y
+                    bool agenteYEstaEnConjuntoDeAgentes = false;
+                    for(unsigned int k = 0; !agenteYEstaEnConjuntoDeAgentes && k < conjuntoDeAgentes.size(); k++){
+                        if(abs(_listaOpiniones[j].agenteY) == conjuntoDeAgentes[k]){
+                            agenteYEstaEnConjuntoDeAgentes = true;
+                        }
+                    }
+    
+                    // Validación del conjunto
+                    if(!agenteYEstaEnConjuntoDeAgentes && _listaOpiniones[j].agenteY > 0){
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+
+    return agentesConfiablesHastaAhora;
+}
+
 
 unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int>& conjuntoDeAgentes){
     for(unsigned int i = 0; i < conjuntoDeAgentes.size(); i++){
@@ -305,21 +399,26 @@ unsigned int Casos::cantidadAgentesConfiablesBTDosPodas(std::vector<int>& conjun
     return agentesConfiablesHastaAhora;
 }
 
+
 int Casos::getCantidadInformantes(){
     return _informantes;
 }
+
 
 int Casos::getCantidadRespuestas(){
     return _respuestas;
 }
 
+
 double Casos::getBenchmarkTiempo(){
     return _benchmarkTiempo;
 }
 
+
 unsigned int Casos::getCantidadAgentesConfiables(){
     return _cantidadAgentesConfiables;
 }
+
 
 void Casos::benchmark(unsigned int repeticiones, unsigned int podas){
     // Coloca en _benchmarkTiempo el tiempo promedio de las n repeticiones

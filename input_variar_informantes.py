@@ -2,7 +2,7 @@ from random import randint, choice
 
 informantes_min = 5
 informantes_max = 20
-respuestas = 20
+respuestas = 15
 repeticiones = 10
 
 for n in range(0, repeticiones):

@@ -23,8 +23,11 @@ int main(int argc, char* argv[]){
         if(podasParam == "-p0"){
             podas = 0;
         }
-        else if(podasParam == "-p1"){
-            podas = 1;
+        else if(podasParam == "-p1a"){
+            podas = 11;
+        }
+        else if(podasParam == "-p1b"){
+            podas = 12;
         }
         else if(podasParam == "-p2"){
             podas = 2;

@@ -1,7 +1,7 @@
 from random import randint, choice
 
 informantes_min = 5
-informantes_max = 20
+informantes_max = 25
 respuestas = 20
 repeticiones = 10
 

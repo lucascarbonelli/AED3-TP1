@@ -15,9 +15,11 @@ int main(int argc, char* argv[]){
     int podas = 2;
     bool esBench = false;
     std::string podasParam;
+    std::string archivo_res;
     std::vector<Casos> lista_casos;
 
-    if(argc == 2){
+    if(argc == 3){
+        archivo_res = std::string(argv[2]);
         esBench = true;
         podasParam = std::string(argv[1]);
         if(podasParam == "-p0"){
@@ -59,7 +61,7 @@ int main(int argc, char* argv[]){
         }
         
         std::ofstream resultados;
-        resultados.open(ARCHIVO_RESULTADOS);
+        resultados.open(archivo_res);
         resultados << "Informantes" << DELIMITADOR << "Respuestas" << DELIMITADOR << "Agentes_Confiables" << DELIMITADOR << "Tiempo_s" << std::endl;
         for(unsigned int i = 0; i < lista_casos.size(); i++){
             resultados << lista_casos[i].getCantidadInformantes() << DELIMITADOR;

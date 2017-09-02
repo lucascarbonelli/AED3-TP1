@@ -1,0 +1,103 @@
+\documentclass{article}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\contentsname}{Indice}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage[table]{xcolor}
+
+\usepackage{vmargin}
+  %configuración de pagina:
+\setpapersize{A4}
+\setmargins{2.5cm}       % margen izquierdo
+{1.5cm}                  % margen superior
+{16.5cm}                 % anchura del texto
+{23.42cm}                % altura del texto
+{10pt}                   % altura de los encabezados
+{1cm}                    % espacio entre el texto y los encabezados
+{0pt}                    % altura del pie de página
+{2cm}                    % espacio entre el texto y el pie de página
+
+
+\begin{document}
+
+%quiza podamos cambiar la caratula a la del DC, tipo algo1,algo2
+\begin{titlepage}
+	\centering
+	\vspace{1cm}
+	{\normalfont\huge Universidad de Buenos Aires \par}
+	\vspace{1cm}
+	{\normalfont\Large Facultad de Ciencias Exactas y Naturales\par}
+	{\normalfont\Large Departamento de Computación\par}
+	\vspace{1.5cm}
+	{\bfseries\huge Algoritmos y Estructuras 3 \par}
+	\vspace{1.5cm}
+	{\normalfont\huge  \par}
+	\vspace{1.5cm}
+	
+	{\large
+		\begin{tabular}{l c l}
+		Autor & LU & Correo electrónico \\
+		\hline
+		Carbonelli, Lucas 	& 596/15 & luc92ac@hotmail.com \\
+		\end{tabular}
+	}
+	
+
+
+\end{titlepage}
+
+\newpage
+
+%habría que hacer que no diga contents en inglés, en métodos no pudimos...
+\textbf{\tableofcontents{}}
+
+\newpage
+
+\section{Introducción}
+
+Este trabajo tiene como objetivo mostrar la resolución de un problema en particular, mediante una solución algoritmica que utilize la técnica backtraking.
+El problema en cuestión consiste en determinar la confiabilidad de un grupo de agentes utilizando una encuesta que mide la confianza entre los mismos. Los agentes deben opinar sobre cada uno, inclusive ellos mismos.
+Como resultado de la encuesta, se obtiene un conjunto de afirmaciones de la forma “X dice que Y es confiable”, “X dice que Y no es confiable”. Si X es confiable entonces se asume que lo que el agente opina siempre es verdadero. Caso contrario, si X no es confiable, entonces las opiniones pueden ser verdaderas o falsas. Lo que se busca es determinar la máxima cantidad de agentes en los que se puede confiar, de modo que las respuestas a la encuesta sean consistentes. \\
+Por ejemplo, si tenemos un conjunto de cuatro informantes A,B,C y D, que responden a la encuesta de la siguiente manera:
+\begin{itemize}
+	\item A dice que B es confiable
+	\item A dice que D no es cofiable
+	\item B dice C no es confiable
+	\item C dice que A son confiables
+	\item C dice que D son confiables
+\end{itemize}
+Se puede confiar en dos agentes como máximo, por ejemplo en los agentes A y B. Cualquier conjunto de tres agentes es inconsistente. Por ejemplo el conjunto que incluye a los agentes A, B y C no es válido porque el B dice que C no es confiable.\\
+En sisntesis, un conjunto es válido si cumple las siguientes condiciones:
+\begin{itemize}
+	\item Ningún agente en el conjunto diga que es confiable un agente que no esta en el conjunto.
+	\item Ningún agente en el conjunto diga que no es confiable un agente en el conjunto.
+\end{itemize}
+
+La entrada del programa que resuelve este problema consiste de varios casos que se procesan en lote. Cada caso comienza con dos enteros no negativos $1 \leq i$ y $0 \leq a$, separados por espacios en blancos. $i$ es el número de informantes y $a$ es el número de respuestas a encuestas. Luego hay $a$ líneas, cada una con dos números $x$ y $y$ ($1 \leq x \leq i, 1 \leq |y| \leq i$) separados por espacios en blanco. Si $y$ es positivo, la lıínea de entrada significa que el agente “$x$ dice que el agente $y$ es confiable”. Si $y$ es negativo entonces, la línea de entrada significa que el agente “$x$ dice que el agente $-y$ no es confiable”. El final de la entrada se indica con una línea con dos ceros. Por cada caso de entrada escribir en la salida una línea con la máxima cantidad de agentes. Por ejemplo, dada la siguiente entrada: \\
+4 5 \\
+1 2 \\
+1 -4 \\
+2 -3 \\
+3 1 \\
+3 4 \\
+1 1 \\
+1 -1 \\
+3 3 \\
+1 2 \\
+2 3 \\
+3 -1 \\
+0 0 \\
+El programa devuelve: \\
+2 \\
+0 \\
+2 \\
+
+
+\section{Implementación}
+
+\section{Resultados}
+
+\end{document}

@@ -3,6 +3,8 @@
 \renewcommand{\contentsname}{Indice}
 \usepackage{float}
 \usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \usepackage{graphicx}
 \usepackage[usenames, dvipsnames]{color}
@@ -89,14 +91,59 @@ La entrada del programa que resuelve este problema consiste de varios casos que 
 1 2 \\
 2 3 \\
 3 -1 \\
-0 0 \\
+0 0 \\ \\
 El programa devuelve: \\
 2 \\
 0 \\
 2 \\
 
+La técnica backtraking consiste en ir creando todas las posibles soluciones (en este caso particular, conjuntos de agentes), y analizar su validez. La ventaja de esta técnica es que se vale de las restricciones del problema para evitar analizar conjuntos de soluciones invalidas, reduciendo el tiempo de ejecución. Cada sección del algoritmo que permite reducir el conjunto de soluciones se denomina poda. El algoritmo planteado implementa dos podas. El la sección de resultados se detallan las pruebas realizadas para medir el impacto de cada poda por separado y combinadas.
+En la sección Implementación se presenta el algoritmo y se deduce su complejidad, la cual es $O(2^i i^3 a^2) $.
+ El algoritmo se implementó en C++. 
 
 \section{Implementación}
+
+% Descripción de las podas
+
+% Pseudocodigo
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Function{cantidadAgentesConfiablesBT}{conjAgentesSolución,listaOpiniones}
+\For{$i \in$ conjAgentesSolución}
+	\For{$j \in$ listaOpiniones}
+		\If{$i$ opina de otro agente}
+			\For{$k \in$ conjAgentesSolución}
+				\If{$i$ opina de $k$} \Comment{$O(1)$}
+					\State $i$ y $k$ estan en el conjunto solución
+				\EndIf
+			\EndFor
+			
+			\If{$i$ y $k$ estan en el conjunto solución AND $i$ no confia en $k$}
+				\State Conjunto inconsistente, se descarta toda la rama
+			\EndIf
+			
+			\If{$k$ no esta en el conjunto solución AND $i$ confia en $k$ AND $k$ ya no puede se agregada a la solución}
+				\State Conjunto inconsistente, se descarta toda la rama
+			\EndIf
+			
+			\If{$k$ no esta en el conjunto solución AND $i$ confia en $k$}
+				\For{$l \in$ listaOpiniones}
+					\If{Algún agente dice que $k$ no es confiable}
+						\For{$m \in$ conjAgentesSolución}
+							\If{$m$ dice que $k$ no es confiable}
+								\State Se poda la rama
+							\EndIf
+						\EndFor
+					\EndIf
+				\EndFor
+			\EndIf
+		\EndIf
+	\EndFor
+\EndFor
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 \section{Resultados}
 

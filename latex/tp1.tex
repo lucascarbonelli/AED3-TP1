@@ -98,7 +98,7 @@ El programa devuelve: \\
 2 \\
 
 La técnica backtraking consiste en ir creando todas las posibles soluciones (en este caso particular, conjuntos de agentes), y analizar su validez. La ventaja de esta técnica es que se vale de las restricciones del problema para evitar analizar conjuntos de soluciones invalidas, reduciendo el tiempo de ejecución. Cada sección del algoritmo que permite reducir el conjunto de soluciones se denomina poda. El algoritmo planteado implementa dos podas. El la sección de resultados se detallan las pruebas realizadas para medir el impacto de cada poda por separado y combinadas.
-En la sección Implementación se presenta el algoritmo y se deduce su complejidad, la cual es $O(2^i i^3 a^2) $.
+En la sección Implementación se presenta el algoritmo y se deduce su complejidad, la cual es $O(2^i i^2 a^2) $.
  El algoritmo se implementó en C++. 
 
 \section{Implementación}
@@ -110,37 +110,40 @@ En la sección Implementación se presenta el algoritmo y se deduce su complejid
 \begin{algorithm}
 \begin{algorithmic}[1]
 \Function{cantidadAgentesConfiablesBT}{conjAgentesSolución,listaOpiniones}
-\For{$i \in$ conjAgentesSolución}
-	\For{$j \in$ listaOpiniones}
-		\If{$i$ opina de otro agente}
-			\For{$k \in$ conjAgentesSolución}
-				\If{$i$ opina de $k$} \Comment{$O(1)$}
-					\State $i$ y $k$ estan en el conjunto solución
-				\EndIf
-			\EndFor
-			
-			\If{$i$ y $k$ estan en el conjunto solución AND $i$ no confia en $k$}
-				\State Conjunto inconsistente, se descarta toda la rama
-			\EndIf
-			
-			\If{$k$ no esta en el conjunto solución AND $i$ confia en $k$ AND $k$ ya no puede se agregada a la solución}
-				\State Conjunto inconsistente, se descarta toda la rama
-			\EndIf
-			
-			\If{$k$ no esta en el conjunto solución AND $i$ confia en $k$}
-				\For{$l \in$ listaOpiniones}
-					\If{Algún agente dice que $k$ no es confiable}
-						\For{$m \in$ conjAgentesSolución}
-							\If{$m$ dice que $k$ no es confiable}
-								\State Se poda la rama
-							\EndIf
-						\EndFor
-					\EndIf
-				\EndFor
-			\EndIf
+\For{$c \in$ conjAgentesSolución} \Comment{$O(i)$}
+	\For{$l \in$ listaOpiniones} \Comment{$O(a)$}
+		\If{$c$ opina de otro agente en conjAgentesSolución} \Comment{Buscar al agente en el conj $O(i)$}
+			\State $c$ opina sobre $c'$, $c' \in$ conjAgentesSolución				\EndIf
+		\If{opinión de $c$ sobre $c'$ invalida el conjunto} \Comment{$O(1)$}
+			\State Se descarta toda la rama
 		\EndIf
+
+			\If{$c'$ no está en conjAgentesSolución AND $c$ confia en $c'$} \Comment{$O(1)$}
+				\If{Algún agente dice que $c'$ no es confiable} \Comment{Buscar al agente en las opiniones $O(a)$}				
+					\If{Es un agente de la solución} \Comment{Buscar al agente en el conj $O(i)$}
+						\State Se poda la rama				
+					\EndIf
+				\EndIf
+			\EndIf
 	\EndFor
 \EndFor
+\State agentesConfiablesHastaAhora $\gets$ conjAgentesSolución.tam \Comment{$O(1)$}
+\For{$c \in$ conjAgentesSolución.ultimo+1,i} \Comment{$O(i)$}
+	\If{No quedan agentes para armar un conjunto mayor a agentesConfiablesHastaAhora} 
+		\State Se poda la rama \Comment{$O(1)$}
+	\EndIf
+	\State conjAgentesSolución.agregar($c$) \Comment{$O(1)$}
+	\State agentesConfiablesTmp $\gets$ cantidadAgentesConfiablesBT(conjAgentesSolución,listaOpiniones)
+	\If{agentesConfiablesTmp $>$ agentesConfiablesHastaAhora} \Comment{$O(1)$}
+		\State agentesConfiablesHastaAhora $\gets$ agentesConfiablesTmp \Comment{$O(1)$}
+	\EndIf
+	\State conjAgentesSolución.eliminar($c$) \Comment{$O(1)$}
+\EndFor
+\If{agentesConfiablesHastaAhora $==$ conjAgentesSolución.tam} \Comment{"Caso base" $O(1)$}
+	\If{Agente Y no esta en el conjunto, X confia en Y} \Comment{$O(i*a)$}
+		\State Se descarta toda la rama
+	\EndIf
+\EndIf
 \EndFunction
 \end{algorithmic}
 \end{algorithm}

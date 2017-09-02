@@ -103,9 +103,9 @@ En la sección Implementación se presenta el algoritmo y se deduce su complejid
 
 \section{Implementación}
 
-% Descripción de las podas
-
 % Pseudocodigo
+
+El pseudocodigo del algoritmo implementado se muestra a continuación:
 
 \begin{algorithm}
 \begin{algorithmic}[1]
@@ -121,7 +121,7 @@ En la sección Implementación se presenta el algoritmo y se deduce su complejid
 			\If{$c'$ no está en conjAgentesSolución AND $c$ confia en $c'$} \Comment{$O(1)$}
 				\If{Algún agente dice que $c'$ no es confiable} \Comment{Buscar al agente en las opiniones $O(a)$}				
 					\If{Es un agente de la solución} \Comment{Buscar al agente en el conj $O(i)$}
-						\State Se poda la rama				
+						\State Se poda la rama \Comment{Poda A $O(i)$}			
 					\EndIf
 				\EndIf
 			\EndIf
@@ -130,7 +130,7 @@ En la sección Implementación se presenta el algoritmo y se deduce su complejid
 \State agentesConfiablesHastaAhora $\gets$ conjAgentesSolución.tam \Comment{$O(1)$}
 \For{$c \in$ conjAgentesSolución.ultimo+1,i} \Comment{$O(i)$}
 	\If{No quedan agentes para armar un conjunto mayor a agentesConfiablesHastaAhora} 
-		\State Se poda la rama \Comment{$O(1)$}
+		\State Se poda la rama \Comment{Poda B $O(1)$}
 	\EndIf
 	\State conjAgentesSolución.agregar($c$) \Comment{$O(1)$}
 	\State agentesConfiablesTmp $\gets$ cantidadAgentesConfiablesBT(conjAgentesSolución,listaOpiniones)
@@ -147,6 +147,19 @@ En la sección Implementación se presenta el algoritmo y se deduce su complejid
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+
+% Analisis del algoritmo
+Este algoritmo puede dividirse en tres partes. En la primera parte se verifica la consistencia del conjunto y se evalua si puede realizarse una de las podas. En la segunda, se efectua la llamada recursiva y se evalua si puede realizarse la otra poda. Finalmente, en la tercera parte se verifica una de las condiciones en una situación que no podia evaluarse con anterioridad. \\
+Cabe recordar que hay $i$ agentes y $a$ respuestas u opiniones. Los agentes internamente se almacenan como números del 1 al $i$. La solución que se está analizando en un momento dado se guarda en conjAgentesSolución, que es un conjunto ordenado de agentes. Está implementado como un vector en C++. El orden se mantiene debido a la forma en que se insertan y eliminan los elementos del vector, siempre el elemento que se inserta es mayor al último elemento del vector y se lo agrega al final del mismo. \\
+En la primera parte se analiza la consistencia del conjunto de agentes, verificando las siguientes condiciones:
+
+\begin{enumerate}
+	\item Los agentes X e Y están en el conjunto pero X no confia en Y
+\end{enumerate}
+
+% Descripción de las podas
+
+% Análisis de complegidad
 
 \section{Resultados}
 

@@ -178,34 +178,60 @@ En la tercera parte del algoritmo se evalúa la situación en la cual no se obtu
 
 \subsection{Metodología}
 
+El tiempo de ejecución del algoritmo depende de dos variables, la cantidad de agentes y de la cantidad de respuestas. 
+Con el objetivo de medir la incidencia de cada una de las variables, se creó un script en Python para generar casos de test aleatorios de forma uniforme. 
+Además, es de particular interes medir el impacto de las podas en el rendimiento. Para lo cual, se probaron 4 versiones distintas del algoritmo, sin podas, con la poda A, con la poda B, y con ambas podas.
+Se crearon aleatoriamente dos conjuntos de configuraciones de casos. Los conjuntos tienen las siguientes características:
+
+\begin{enumerate}
+	\item Casos que tienen 20 agentes y de 0 a 100 respuestas.
+	\item Casos que tienen de 5 a 25 agente, y 20 repuestas.
+\end{enumerate}
+
+Para cada configuración, se crearon 10 casos a fin de obtener un resultado estadísticamente relevante. Por ejemplo, se crearon 10 casos que tienen 20 agentes y 37 respuestas.
+
+Las pruebas se realizaron en una computadora con procesador Intel® Core™ i5-6200U CPU @ 2.30GHz × 4 y 16 GB de memoria de RAM.
+
 \subsection{Resultados variando la cantidad de respuestas}
 
-\begin{figure}
-\caption{Tiempo en funcion de la cantidad de respuestas (Cotas A + B)}
+La figura 1 muestra los resultados obtenidos de variar la cantidad de respuestas, manteniendo fijo la cantidad de agentes en 20. Como se dijo anteriormente, para cada configuración se crearon 10 casos. El valor graficado corresponde al tiempo promedio de los 10 casos, con el objetivo de evitar casos excepcionales sean tomados como representativos.
+
+ 
+
+\begin{figure}[h]
+\caption{Tiempo en funcion de la cantidad de respuestas}
 \centering
 \includegraphics[scale=0.5]{Respuestas_st.pdf}
 \end{figure}
 
-\begin{figure}
-\caption{Tiempo en funcion de la cantidad de respuestas}
-\centering
-\includegraphics[scale=0.5]{Respuestas_AB_st.pdf}
-\end{figure}
+Lo primero que se observa es la marcada diferencia que se produce al incorporar la poda B, tanto en tiempo como en comportamiento. La versión del algoritmo sin podas o con poda A obtiene los peores resultados cuando la cantidad de respuestas es menor a 5. Esto puede deberse a que al haber pocas opiniones, hay pocos agentes considerados poco confiables, y como consecuencia, hay conjuntos grandes de agentes que son consistentes. El algoritmo con poda B es particularmente rápido si encuentra un conjunto consistente grande tempranamente, ya que evita explorar ramas de menor profundidad al tamaño de este. Sin la poda B se deben recorrer una gran cantidad de ramas porque hay una cantidad pequeña de conjuntos inconsistentes. Por otro lado todas las variantes del algoritmo tienen un comportamiento similar cuando la cantidad de respuestas es mayor a 40. Se observa que el tiempo de ejecución disminuye significativamente. Esto probablemente se debe a que con un número tan alto de respuestas, existen muchos agentes catalogados como no confiables. Como consecuencia los conjuntos de agentes consistentes son pequeños y las ramas son cortadas rapidamente, lo cual conduce a que el tiempo de procesamiento disminuya. \\
 
-\begin{figure}
-\caption{Tiempo en funcion de la cantidad de respuestas (boxplot)}
+
+%\begin{figure}[h]
+%\caption{Tiempo en funcion de la cantidad de respuestas (Cotas A + B)}
+%\centering
+%\includegraphics[scale=0.5]{Respuestas_AB_st.pdf}
+%\end{figure}
+
+\begin{figure}[h]
+\caption{Tiempo en funcion de la cantidad de respuestas (casos)}
 \centering
 \includegraphics[scale=0.5]{Respuestas_box_st.pdf}
 \end{figure}
 
+En la figura 2 se muestra un diagrama de cajas del tiempo de ejecución en funcion de la cantidad de respuestas del algoritmo con ambas podas. Se observa que el pero caso, para una cantidad dada de respuestas, generalmente se encuentra muy alejado de la media. Esto permite concluir que más allá de la cantidad de respuestas, el significado particular del conjunto de respuestas tiene una gran influencia en el tiempo necesario para procesar el caso.
 
 \subsection{Resultados variando la cantidad de agentes}
 
-\begin{figure}
+La figura 3 muestra los resultados obtenidos de variar la cantidad de agentes, manteniendo fijo la cantidad de respuestas en 20. Para cada configuración se crearon 10 casos. El valor graficado corresponde al tiempo promedio de los 10 casos, con el objetivo de evitar casos excepcionales sean tomados como representativos.
+
+\begin{figure}[h]
 \caption{Tiempo en funcion de la cantidad de agentes}
 \centering
 \includegraphics[scale=0.5]{Agentes_st.pdf}
 \end{figure}
 
+El eje temporal está en escala logarítmica, lo cual permite apreciar la naturaleza exponencial del algoritmo. 
+Se observa que para casos con menos de 10 agentes, hay muy poca diferencia entre las distintas variantes del algoritmo.
 
 \end{document}

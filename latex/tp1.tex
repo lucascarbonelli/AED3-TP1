@@ -25,7 +25,6 @@
 
 \begin{document}
 
-%quiza podamos cambiar la caratula a la del DC, tipo algo1,algo2
 \begin{titlepage}
 	\centering
 	\vspace{1cm}
@@ -77,7 +76,6 @@ En síntesis, un conjunto es válido si cumple las siguientes condiciones:
 	\item Ningún agente en el conjunto diga que es confiable un agente que no esta en el conjunto.
 	\item Ningún agente en el conjunto diga que no es confiable un agente en el conjunto.
 \end{itemize}
-
 La entrada del programa que resuelve este problema consiste de varios casos que se procesan en lote. Cada caso comienza con dos enteros no negativos $1 \leq i$ y $0 \leq a$, separados por espacios en blancos. $i$ es el número de informantes y $a$ es el número de respuestas a encuestas. Luego hay $a$ líneas, cada una con dos números $x$ y $y$ ($1 \leq x \leq i, 1 \leq |y| \leq i$) separados por espacios en blanco. Si $y$ es positivo, la línea de entrada significa que el agente "$x$ dice que el agente $y$ es confiable". Si $y$ es negativo entonces, la línea de entrada significa que el agente "$x$ dice que el agente $-y$ no es confiable". El final de la entrada se indica con una línea con dos ceros. Por cada caso de entrada escribir en la salida una línea con la máxima cantidad de agentes. Por ejemplo, dada la siguiente entrada: \\
 4 5 \\
 1 2 \\
@@ -180,7 +178,7 @@ En la tercera parte del algoritmo se evalúa la situación en la cual no se obtu
 
 El tiempo de ejecución del algoritmo depende de dos variables, la cantidad de agentes y de la cantidad de respuestas. 
 Con el objetivo de medir la incidencia de cada una de las variables, se creó un script en Python para generar casos de test aleatorios de forma uniforme. 
-Además, es de particular interes medir el impacto de las podas en el rendimiento. Para lo cual, se probaron 4 versiones distintas del algoritmo, sin podas, con la poda A, con la poda B, y con ambas podas.
+Además, es de particular interés medir el impacto de las podas en el rendimiento. Para lo cual, se probaron 4 versiones distintas del algoritmo, sin podas, con la poda A, con la poda B, y con ambas podas.
 Se crearon aleatoriamente dos conjuntos de configuraciones de casos. Los conjuntos tienen las siguientes características:
 
 \begin{enumerate}
@@ -204,34 +202,28 @@ La figura 1 muestra los resultados obtenidos de variar la cantidad de respuestas
 \includegraphics[scale=0.5]{Respuestas_st.pdf}
 \end{figure}
 
-Lo primero que se observa es la marcada diferencia que se produce al incorporar la poda B, tanto en tiempo como en comportamiento. La versión del algoritmo sin podas o con poda A obtiene los peores resultados cuando la cantidad de respuestas es menor a 5. Esto puede deberse a que al haber pocas opiniones, hay pocos agentes considerados poco confiables, y como consecuencia, hay conjuntos grandes de agentes que son consistentes. El algoritmo con poda B es particularmente rápido si encuentra un conjunto consistente grande tempranamente, ya que evita explorar ramas de menor profundidad al tamaño de este. Sin la poda B se deben recorrer una gran cantidad de ramas porque hay una cantidad pequeña de conjuntos inconsistentes. Por otro lado todas las variantes del algoritmo tienen un comportamiento similar cuando la cantidad de respuestas es mayor a 40. Se observa que el tiempo de ejecución disminuye significativamente. Esto probablemente se debe a que con un número tan alto de respuestas, existen muchos agentes catalogados como no confiables. Como consecuencia los conjuntos de agentes consistentes son pequeños y las ramas son cortadas rapidamente, lo cual conduce a que el tiempo de procesamiento disminuya. \\
-
-
-%\begin{figure}[h]
-%\caption{Tiempo en funcion de la cantidad de respuestas (Cotas A + B)}
-%\centering
-%\includegraphics[scale=0.5]{Respuestas_AB_st.pdf}
-%\end{figure}
+Lo primero que se observa es la marcada diferencia que se produce al incorporar la poda B, tanto en tiempo como en comportamiento. La versión del algoritmo sin podas o con poda A obtiene los peores resultados cuando la cantidad de respuestas es menor a 5. Esto puede deberse a que al haber pocas opiniones, hay pocos agentes considerados poco confiables, y como consecuencia, hay conjuntos grandes de agentes que son consistentes. El algoritmo con poda B es particularmente rápido si encuentra un conjunto consistente grande tempranamente, ya que evita explorar ramas de menor profundidad al tamaño de este. Sin la poda B se deben recorrer una gran cantidad de ramas porque hay una cantidad pequeña de conjuntos inconsistentes. Por otro lado todas las variantes del algoritmo tienen un comportamiento similar cuando la cantidad de respuestas es mayor a 40. Se observa que el tiempo de ejecución disminuye significativamente. Esto probablemente se debe a que con un número tan alto de respuestas, existen muchos agentes catalogados como no confiables. Como consecuencia los conjuntos de agentes consistentes son pequeños y las ramas son cortadas rápidamente, lo cual conduce a que el tiempo de procesamiento disminuya.
 
 \begin{figure}[h]
-\caption{Tiempo en funcion de la cantidad de respuestas (casos)}
+\caption{Tiempo en función de la cantidad de respuestas (casos)}
 \centering
 \includegraphics[scale=0.5]{Respuestas_box_st.pdf}
 \end{figure}
 
-En la figura 2 se muestra un diagrama de cajas del tiempo de ejecución en funcion de la cantidad de respuestas del algoritmo con ambas podas. Se observa que el pero caso, para una cantidad dada de respuestas, generalmente se encuentra muy alejado de la media. Esto permite concluir que más allá de la cantidad de respuestas, el significado particular del conjunto de respuestas tiene una gran influencia en el tiempo necesario para procesar el caso.
+En la figura 2 se muestra un diagrama de cajas del tiempo de ejecución en función de la cantidad de respuestas del algoritmo con ambas podas. Se observa que el peor caso, para una cantidad dada de respuestas, generalmente se encuentra muy alejado de la media. Esto permite concluir que más allá de la cantidad de respuestas, las características particulares del conjunto de respuestas tiene una gran influencia en el tiempo necesario para procesar el caso.
 
 \subsection{Resultados variando la cantidad de agentes}
 
 La figura 3 muestra los resultados obtenidos de variar la cantidad de agentes, manteniendo fijo la cantidad de respuestas en 20. Para cada configuración se crearon 10 casos. El valor graficado corresponde al tiempo promedio de los 10 casos, con el objetivo de evitar casos excepcionales sean tomados como representativos.
 
 \begin{figure}[h]
-\caption{Tiempo en funcion de la cantidad de agentes}
+\caption{Tiempo en función de la cantidad de agentes}
 \centering
 \includegraphics[scale=0.5]{Agentes_st.pdf}
 \end{figure}
 
-El eje temporal está en escala logarítmica, lo cual permite apreciar la naturaleza exponencial del algoritmo. 
-Se observa que para casos con menos de 10 agentes, hay muy poca diferencia entre las distintas variantes del algoritmo.
+El eje temporal está en escala logarítmica, la cual permite apreciar la naturaleza exponencial del algoritmo. 
+Se observa que para casos con menos de 10 agentes, hay muy poca diferencia entre las distintas variantes del algoritmo. Probablemente se deba a que con 20 respuestas, muchos agentes son catalogados como no confiables, los conjuntos consistentes de agentes son pequeños y las ramas se corta rápidamente, sin que las podas lleguen a entrar en acción. 
+Siguiendo con este razonamiento, se justifica que las diferencias entre los tiempos de ejecución de las distintas variantes del algoritmo aumenten a medida que aumenta la cantidad de agentes, ya que hay más conjuntos de agentes consistentes y las podas pueden entrar más en acción. Como consecuencia, para casos de 25 agentes, la versión con la poda A es un 15\% más rápido en promedio que sin podas, y utilizando las dos podas, el tiempo de ejecución disminuye a menos de la mitad.
 
 \end{document}
